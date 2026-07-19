@@ -4,6 +4,7 @@ import { generateForRepository } from "../core/generate.js";
 import { formatMessage } from "../generator/format-message.js";
 import { createCommit } from "../git/commit.js";
 import { validateMessage } from "../validation/validate-message.js";
+import { paint, section } from "../ui/theme.js";
 
 export interface CommitOptions { yes?: boolean; edit?: boolean; skipHooks?: boolean; type?: string; scope?: string; allowSecretWarning?: boolean }
 export async function commitCommand(options: CommitOptions, cwd = process.cwd()): Promise<void> {
@@ -19,8 +20,8 @@ export async function commitCommand(options: CommitOptions, cwd = process.cwd())
   if (options.edit) message = await editor({ message: "Edit commit message", default: message });
   const validation = validateMessage(message, result.config);
   if (!validation.valid) throw new Error(validation.errors.join("\n"));
-  console.log(`\n${pc.bold("Commit message:")}\n${pc.green(message)}\n`);
+  console.log(`\n${section("Commit message")}\n${paint.success(message)}\n`);
   if (!options.yes && !await confirm({ message: "Create this commit?", default: true })) { console.log("Commit cancelled."); return; }
   await createCommit(result.snapshot.root, message, options.skipHooks, options.allowSecretWarning);
-  console.log(pc.green("Commit created successfully."));
+  console.log(paint.success("✓ Commit created successfully."));
 }

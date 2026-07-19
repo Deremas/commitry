@@ -1,6 +1,7 @@
 import pc from "picocolors";
 import { formatMessage } from "../generator/format-message.js";
 import { generateForRepository } from "../core/generate.js";
+import { paint, section } from "../ui/theme.js";
 
 export interface GenerateOptions { json?: boolean; explain?: boolean; unstaged?: boolean; all?: boolean }
 export async function generateCommand(options: GenerateOptions, cwd = process.cwd()): Promise<void> {
@@ -9,6 +10,6 @@ export async function generateCommand(options: GenerateOptions, cwd = process.cw
   if (result.previewOnly) console.log(pc.yellow("Preview only — unstaged changes cannot be committed."));
   if (result.secretFindings.length) console.log(pc.red(`Warning: ${result.secretFindings.length} possible secret(s) detected in the selected diff.`));
   if (result.analysis.mixedConcerns) { console.log(pc.yellow(`\n${result.analysis.concernGroups.length} concerns detected:`)); result.analysis.concernGroups.forEach((group, index) => console.log(`  ${index + 1}. ${group.name} — ${group.files.length} file(s)\n     ${group.suggestion}`)); console.log(); }
-  console.log(pc.bold("Suggested commits:\n"));
-  result.candidates.forEach((candidate, index) => { console.log(`${index + 1}. ${pc.green(formatMessage(candidate))}`); if (options.explain) console.log(`   ${candidate.reasons.join("; ")}`); });
+  console.log(`${section("Suggested commits")}\n`);
+  result.candidates.forEach((candidate, index) => { console.log(`${paint.info(`${index + 1}.`)} ${paint.success(formatMessage(candidate))}`); if (options.explain) console.log(`   ${paint.muted(candidate.reasons.join("; "))}`); });
 }

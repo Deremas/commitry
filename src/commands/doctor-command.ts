@@ -1,10 +1,10 @@
 import { access, constants } from "node:fs/promises";
 import { join } from "node:path";
-import pc from "picocolors";
 import { loadConfig } from "../config/load-config.js";
 import { findRepositoryRoot } from "../git/repository.js";
 import { runGit } from "../git/runner.js";
 import { hookStatus } from "../hooks/hook-installer.js";
+import { paint, section } from "../ui/theme.js";
 
 interface Check { name: string; ok: boolean; detail: string; required: boolean }
 export async function doctorCommand(options: { json?: boolean }, cwd = process.cwd()): Promise<void> {
@@ -23,7 +23,7 @@ export async function doctorCommand(options: { json?: boolean }, cwd = process.c
   }
   const healthy = checks.every((check) => !check.required || check.ok);
   if (options.json) console.log(JSON.stringify({ healthy, checks }, null, 2));
-  else { console.log(pc.bold("Commitry doctor\n")); checks.forEach((check) => console.log(`${check.ok ? pc.green("✓") : check.required ? pc.red("✗") : pc.yellow("!")} ${check.name}: ${check.detail}`)); console.log(healthy ? pc.green("\nRequired checks passed.") : pc.red("\nOne or more required checks failed.")); }
+  else { console.log(`${section("Commitry doctor")}\n`); checks.forEach((check) => console.log(`${check.ok ? paint.success("✓") : check.required ? paint.danger("✗") : paint.warning("!")} ${paint.info(check.name)} ${paint.muted("—")} ${check.detail}`)); console.log(healthy ? paint.success("\n✓ Required checks passed.") : paint.danger("\n✗ One or more required checks failed.")); }
   if (!healthy) process.exitCode = 1;
 }
 function message(error: unknown): string { return error instanceof Error ? error.message : String(error); }

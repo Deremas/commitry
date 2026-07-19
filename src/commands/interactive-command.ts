@@ -1,6 +1,7 @@
 import { checkbox, input, select } from "@inquirer/prompts";
 import pc from "picocolors";
 import { VERSION } from "../version.js";
+import { banner, paint, statusLine } from "../ui/theme.js";
 import { readRepositorySnapshot } from "../git/repository.js";
 import { stageableFiles, stageFiles } from "../git/staging.js";
 import type { ChangedFile, RepositorySnapshot } from "../types/git.js";
@@ -18,12 +19,11 @@ type StagingAction = "select" | "all" | "back";
 const backFromFilePicker = "__commitry_back__";
 
 export async function interactiveCommand(cwd = process.cwd()): Promise<void> {
-  console.log(pc.bold(pc.cyan(`\nCommitry v${VERSION}`)));
-  console.log(pc.dim("Local-first Git commit assistant\n"));
+  console.log(banner(VERSION));
   while (true) {
     try {
       const snapshot = await readRepositorySnapshot(cwd);
-      console.log(`${pc.bold(snapshot.branch ?? "detached HEAD")}  ${pc.green(`${snapshot.stagedFiles.length} staged`)}  ${pc.yellow(`${snapshot.unstagedFiles.length} unstaged`)}  ${pc.cyan(`${snapshot.untrackedFiles.length} untracked`)}`);
+      console.log(statusLine(snapshot.branch ?? "detached HEAD", snapshot.stagedFiles.length, snapshot.unstagedFiles.length, snapshot.untrackedFiles.length, snapshot.conflictedFiles.length));
       const action = await select<InteractiveAction>({ message: "What would you like to do?", choices: [
         { name: "Commit staged changes", value: "commit", description: "Generate, review, edit, and approve a commit" },
         { name: "Generate suggestions", value: "generate", description: "Analyze the staged diff without committing" },
@@ -36,7 +36,7 @@ export async function interactiveCommand(cwd = process.cwd()): Promise<void> {
         { name: "Run diagnostics", value: "doctor" },
         { name: "Exit", value: "exit" }
       ] });
-      if (action === "exit") { console.log(pc.dim("Goodbye.")); return; }
+      if (action === "exit") { console.log(paint.muted("Goodbye from Commitry.")); return; }
       if (action === "commit") { if (snapshot.stagedFiles.length || await prepareStaging(snapshot, "Prepare changes before committing")) await commitCommand({}, cwd); }
       else if (action === "generate") { if (snapshot.stagedFiles.length || await prepareStaging(snapshot, "Prepare changes before generating suggestions")) await generateCommand({ explain: true }, cwd); }
       else if (action === "stage") await prepareStaging(snapshot, "Manage staging");
@@ -79,7 +79,7 @@ async function prepareStaging(snapshot: RepositorySnapshot, message: string): Pr
     if (!selected.length && selectedPaths.includes(backFromFilePicker)) return false;
   }
   await stageFiles(snapshot.root, selected);
-  console.log(pc.green(`Staged ${selected.length} file${selected.length === 1 ? "" : "s"}.`));
+  console.log(paint.success(`✓ Staged ${selected.length} file${selected.length === 1 ? "" : "s"}.`));
   return true;
 }
 
