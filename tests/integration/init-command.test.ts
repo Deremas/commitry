@@ -12,7 +12,7 @@ afterEach(async () => { vi.restoreAllMocks(); await Promise.all(directories.spli
 
 describe("initCommand", () => {
   it("initializes idempotently without overwriting scripts or hooks", async () => {
-    const root = await mkdtemp(join(tmpdir(), "commitcraft-init-")); directories.push(root);
+    const root = await mkdtemp(join(tmpdir(), "commitry-init-")); directories.push(root);
     await exec("git", ["init", "-b", "main"], { cwd: root });
     await writeFile(join(root, "package.json"), JSON.stringify({ name: "fixture", scripts: { commit: "custom-commit" } }), "utf8");
     vi.spyOn(console, "log").mockImplementation(() => undefined);
@@ -20,10 +20,10 @@ describe("initCommand", () => {
     await initCommand({ hooks: "native", nonInteractive: true }, root);
     const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
     expect(pkg.scripts.commit).toBe("custom-commit");
-    expect(pkg.scripts["commit:generate"]).toBe("commitcraft generate");
+    expect(pkg.scripts["commit:generate"]).toBe("commitry generate");
     expect(await readFile(join(root, ".gitignore"), "utf8")).toBe("node_modules/\n");
     const hook = await readFile(join(root, ".githooks", "commit-msg"), "utf8");
-    expect(hook.match(/# commitcraft:start/g)).toHaveLength(1);
-    expect(JSON.parse(await readFile(join(root, ".commitcraftrc.json"), "utf8"))).toMatchObject({ standard: "conventional-commits" });
+    expect(hook.match(/# commitry:start/g)).toHaveLength(1);
+    expect(JSON.parse(await readFile(join(root, ".commitryrc.json"), "utf8"))).toMatchObject({ standard: "conventional-commits" });
   });
 });

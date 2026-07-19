@@ -10,7 +10,7 @@ const exec = promisify(execFile); const directories: string[] = [];
 afterEach(async () => Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true }))));
 describe("hook installer", () => {
   it("preserves existing hook commands and removes only its managed block", async () => {
-    const root = await mkdtemp(join(tmpdir(), "commitcraft-hooks-")); directories.push(root);
+    const root = await mkdtemp(join(tmpdir(), "commitry-hooks-")); directories.push(root);
     await exec("git", ["init", "-b", "main"], { cwd: root });
     const directory = join(root, ".githooks"); await import("node:fs/promises").then(({ mkdir }) => mkdir(directory));
     await writeFile(join(directory, "commit-msg"), "#!/bin/sh\necho existing\n", "utf8");
@@ -19,10 +19,10 @@ describe("hook installer", () => {
     expect(await readFile(join(directory, "commit-msg"), "utf8")).toContain("echo existing");
     await uninstallHooks(root);
     const remaining = await readFile(join(directory, "commit-msg"), "utf8");
-    expect(remaining).toContain("echo existing"); expect(remaining).not.toContain("commitcraft:start");
+    expect(remaining).toContain("echo existing"); expect(remaining).not.toContain("commitry:start");
   });
   it("honors per-hook installation settings", async () => {
-    const root = await mkdtemp(join(tmpdir(), "commitcraft-hooks-")); directories.push(root);
+    const root = await mkdtemp(join(tmpdir(), "commitry-hooks-")); directories.push(root);
     await exec("git", ["init", "-b", "main"], { cwd: root });
     const result = await installHooks(root, "native", { "pre-commit": false, "post-commit": false, "pre-push": false });
     expect(result.installed).toEqual(["commit-msg"]);

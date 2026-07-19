@@ -1,3 +1,3 @@
-import { configSchema, type CommitCraftConfig } from "./schema.js";
+import { configSchema, type CommitryConfig } from "./schema.js";
 
-export const defaultConfig: CommitCraftConfig = configSchema.parse({});
+export const defaultConfig: CommitryConfig = configSchema.parse({});

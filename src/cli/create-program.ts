@@ -15,11 +15,11 @@ import { interactiveCommand } from "../commands/interactive-command.js";
 import { VERSION } from "../version.js";
 
 export function createProgram(): Command {
-  const program = new Command().name("commitcraft").description("Git-aware Conventional Commit generator").version(VERSION).showHelpAfterError();
+  const program = new Command().name("commitry").description("Git-aware Conventional Commit generator").version(VERSION).showHelpAfterError();
   program.action(async () => isInteractiveTerminal() ? interactiveCommand() : commitCommand({}));
-  program.command("interactive").alias("i").description("Open the interactive CommitCraft menu").action(async () => interactiveCommand());
-  program.command("init").description("Initialize CommitCraft in this repository").option("--hooks <mode>", "auto, native, husky, or none", "auto").option("--non-interactive").action(async (_options, command) => initCommand(command.opts()));
-  program.command("doctor").description("Diagnose the CommitCraft installation").option("--json").action(async (_options, command) => doctorCommand(command.opts()));
+  program.command("interactive").alias("i").description("Open the interactive Commitry menu").action(async () => interactiveCommand());
+  program.command("init").description("Initialize Commitry in this repository").option("--hooks <mode>", "auto, native, husky, or none", "auto").option("--non-interactive").action(async (_options, command) => initCommand(command.opts()));
+  program.command("doctor").description("Diagnose the Commitry installation").option("--json").action(async (_options, command) => doctorCommand(command.opts()));
   program.command("generate").alias("g").description("Generate commit suggestions").option("--explain").option("--json").option("--unstaged").option("--all").action(async (_options, command) => generateCommand(command.opts()));
   program.command("commit").alias("c").description("Generate and create a commit").option("-y, --yes").option("--edit").option("--skip-hooks").option("--allow-secret-warning").option("--type <type>").option("--scope <scope>").action(async (_options, command) => commitCommand(command.opts()));
   program.command("status").description("Show repository status").option("--json").action(async (_options, command) => statusCommand(command.opts()));

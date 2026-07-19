@@ -1,4 +1,4 @@
-# Contributing to CommitCraft
+# Contributing to Commitry
 
 ## Setup
 

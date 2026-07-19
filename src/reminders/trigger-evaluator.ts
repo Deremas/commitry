@@ -1,10 +1,10 @@
-import type { CommitCraftConfig } from "../config/schema.js";
+import type { CommitryConfig } from "../config/schema.js";
 import type { RepositorySnapshot } from "../types/git.js";
 import type { ReminderEvaluation, ReminderReason, ReminderState } from "../types/reminders.js";
 import { minutesBetween } from "../utils/duration.js";
 
 const none = (): ReminderEvaluation => ({ shouldNotify: false, severity: "info", reasons: [], suggestedAction: "continue" });
-export function evaluateReminder(snapshot: RepositorySnapshot, state: ReminderState, config: CommitCraftConfig["reminders"], now: Date, isCI = Boolean(process.env.CI)): ReminderEvaluation {
+export function evaluateReminder(snapshot: RepositorySnapshot, state: ReminderState, config: CommitryConfig["reminders"], now: Date, isCI = Boolean(process.env.CI)): ReminderEvaluation {
   if (!config.enabled || (isCI && config.disableInCI) || (state.snoozedUntil && now < new Date(state.snoozedUntil))) return none();
   if (snapshot.conflictedFiles.length) return { shouldNotify: true, severity: "strong", reasons: ["unresolved-conflicts"], suggestedAction: "resolve-conflicts" };
   if (snapshot.stagedFiles.length && minutesBetween(state.firstStagedAt, now) >= config.stagedAfterMinutes) return { shouldNotify: true, severity: "strong", reasons: ["staged-changes-waiting"], suggestedAction: "commit" };

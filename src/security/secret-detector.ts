@@ -12,7 +12,7 @@ export function detectSecrets(diff: string): SecretFinding[] {
   for (const line of diff.split(/\r?\n/)) {
     if (line.startsWith("+++ b/")) { path = line.slice(6); continue; }
     const hunk = /^@@ -\d+(?:,\d+)? \+(\d+)/.exec(line); if (hunk) { newLine = Number(hunk[1]); continue; }
-    if (line.startsWith("+") && !line.startsWith("+++")) { const content = line.slice(1); if (!/commitcraft:\s*allow-secret/i.test(content)) for (const [kind, pattern] of patterns) if (pattern.test(content) && !findings.some((finding) => finding.path === path && finding.line === newLine && finding.kind === kind)) findings.push({ path, line: newLine || undefined, kind }); newLine++; }
+    if (line.startsWith("+") && !line.startsWith("+++")) { const content = line.slice(1); if (!/commitry:\s*allow-secret/i.test(content)) for (const [kind, pattern] of patterns) if (pattern.test(content) && !findings.some((finding) => finding.path === path && finding.line === newLine && finding.kind === kind)) findings.push({ path, line: newLine || undefined, kind }); newLine++; }
     else if (!line.startsWith("-")) newLine++;
   }
   return findings;

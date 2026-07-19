@@ -16,7 +16,7 @@ const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url
 const date = new Date().toISOString().slice(0, 10);
 const updated = changelog.replace("## [Unreleased]", `## [Unreleased]\n\n## [${pkg.version}] - ${date}`);
 await writeFile(changelogPath, updated, "utf8");
-console.log(`\nPrepared CommitCraft v${pkg.version}.`);
+console.log(`\nPrepared Commitry v${pkg.version}.`);
 console.log("Review the changes, then run:");
 console.log(`  git add package.json package-lock.json CHANGELOG.md`);
 console.log(`  git commit -m \"chore(release): v${pkg.version}\"`);

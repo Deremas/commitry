@@ -20,7 +20,7 @@ export { evaluateRepository } from "./reminders/reminder-engine.js";
 export { watchRepository } from "./reminders/watcher.js";
 export { runWithWatcher } from "./reminders/command-runner.js";
 export type { ReminderState, ReminderEvaluation, ReminderReason } from "./types/reminders.js";
-export type { CommitCraftConfig } from "./config/schema.js";
+export type { CommitryConfig } from "./config/schema.js";
 export type { ChangedFile, GitChangeStatus, RepositorySnapshot } from "./types/git.js";
 export type { CommitAnalysis, CommitCandidate, CommitType } from "./types/commit.js";
 export { detectSecrets } from "./security/secret-detector.js";

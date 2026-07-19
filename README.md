@@ -1,8 +1,8 @@
-# CommitCraft
+# Commitry
 
 Local-first Conventional Commit suggestions, validation, safe commits, and timely Git reminders—without a backend or required network connection.
 
-CommitCraft treats the staged Git diff as commit truth. It can preview other work, but it never silently stages files, changes the index during generation, or creates a commit without developer approval.
+**Try before you commit.** Commitry treats the staged Git diff as commit truth. It can preview other work, but it never silently stages files, changes the index during generation, or creates a commit without developer approval.
 
 ## Highlights
 
@@ -10,10 +10,10 @@ CommitCraft treats the staged Git diff as commit truth. It can preview other wor
 - Detects commit type, scope, branch issue IDs, changed symbols, and breaking-change candidates
 - Warns when staged changes contain unrelated concerns
 - Detects likely secrets before committing without printing secret values
-- Validates messages created inside or outside CommitCraft
+- Validates messages created inside or outside Commitry
 - Tracks dirty and staged work with configurable, cooldown-aware reminders
 - Supports native Git hooks and Husky without overwriting existing hook commands
-- Works offline and stores reminder state only under `.git/commitcraft`
+- Works offline and stores reminder state only under `.git/commitry`
 - Exposes a typed library API for future editor integrations
 
 ## Requirements
@@ -26,8 +26,8 @@ CommitCraft treats the staged Git diff as commit truth. It can preview other wor
 Project-local installation is recommended for teams because the version is recorded in the lockfile:
 
 ```bash
-npm install --save-dev commitcraft
-npx commitcraft init
+npm install --save-dev commitry
+npx commitry init
 ```
 
 For local development before publication:
@@ -42,7 +42,7 @@ npm link
 
 ```bash
 # Initialize configuration, package scripts, and hooks
-npx commitcraft init --hooks=auto
+npx commitry init --hooks=auto
 
 # Inspect the worktree
 npm run commit:status
@@ -59,17 +59,17 @@ npm run commit
 
 ## Interactive terminal mode
 
-Run either executable without arguments to open the persistent menu:
+Run either executable without arguments to open the persistent menu. If nothing is staged, Generate and Commit offer **Select files to stage**, **Stage all changes**, and **Back to main menu** before continuing:
 
 ```bash
-ccraft
+ctry
 # or
-commitcraft interactive
+commitry interactive
 ```
 
 The menu refreshes repository counts and lets you commit, generate suggestions, inspect status, evaluate or snooze reminders, validate messages, inspect hooks, and run diagnostics. Press `Ctrl+C` or choose **Exit** to close it.
 
-Commands such as `ccraft generate --json` remain non-interactive by design so they are safe to use in scripts and editor integrations. Use `ccraft commit` when you want only the guided commit flow.
+Commands such as `ctry generate --json` remain non-interactive by design so they are safe to use in scripts and editor integrations. Use `ctry commit` when you want only the guided commit flow.
 
 Initialization is idempotent. Existing configuration, conflicting package scripts, and custom hook commands are preserved.
 
@@ -77,22 +77,22 @@ Initialization is idempotent. Existing configuration, conflicting package script
 
 | Command | Purpose |
 | --- | --- |
-| `commitcraft` | Open the interactive menu when attached to a terminal |
-| `commitcraft commit` | Suggest, review, and create a commit from staged changes |
-| `commitcraft interactive` (`i`) | Open the persistent interactive terminal menu |
-| `commitcraft generate` (`g`) | Generate suggestions without committing |
-| `commitcraft generate --unstaged` | Preview unstaged work only |
-| `commitcraft generate --all` | Preview all local work only |
-| `commitcraft status` | Summarize staged, unstaged, untracked, and conflicted files |
-| `commitcraft lint "<message>"` | Validate a Conventional Commit message |
-| `commitcraft lint-file <path>` | Validate a message file, primarily from `commit-msg` |
-| `commitcraft init` | Configure a repository safely and idempotently |
-| `commitcraft doctor` | Check Node, Git, repository, configuration, hooks, and access |
-| `commitcraft hooks install\|status\|uninstall` | Manage CommitCraft’s marked hook blocks |
-| `commitcraft remind` | Evaluate reminder rules once |
-| `commitcraft watch` | Run reminder evaluation in the foreground |
-| `commitcraft run -- <command>` | Run a development process and the watcher together |
-| `commitcraft snooze 30m\|1h\|2d\|off` | Snooze or resume reminders |
+| `commitry` | Open the interactive menu when attached to a terminal |
+| `commitry commit` | Suggest, review, and create a commit from staged changes |
+| `commitry interactive` (`i`) | Open the persistent interactive terminal menu |
+| `commitry generate` (`g`) | Generate suggestions without committing |
+| `commitry generate --unstaged` | Preview unstaged work only |
+| `commitry generate --all` | Preview all local work only |
+| `commitry status` | Summarize staged, unstaged, untracked, and conflicted files |
+| `commitry lint "<message>"` | Validate a Conventional Commit message |
+| `commitry lint-file <path>` | Validate a message file, primarily from `commit-msg` |
+| `commitry init` | Configure a repository safely and idempotently |
+| `commitry doctor` | Check Node, Git, repository, configuration, hooks, and access |
+| `commitry hooks install\|status\|uninstall` | Manage Commitry’s marked hook blocks |
+| `commitry remind` | Evaluate reminder rules once |
+| `commitry watch` | Run reminder evaluation in the foreground |
+| `commitry run -- <command>` | Run a development process and the watcher together |
+| `commitry snooze 30m\|1h\|2d\|off` | Snooze or resume reminders |
 
 Machine-readable output is available through `--json` on `generate`, `status`, `doctor`, `remind`, `lint`, and relevant status commands.
 
@@ -103,21 +103,21 @@ When a target repository has a `package.json`, `init` adds missing scripts:
 ```json
 {
   "scripts": {
-    "commit": "commitcraft commit",
-    "commit:generate": "commitcraft generate",
-    "commit:status": "commitcraft status",
-    "commit:watch": "commitcraft watch",
-    "commit:doctor": "commitcraft doctor",
-    "dev:tracked": "commitcraft run -- npm run dev"
+    "commit": "commitry commit",
+    "commit:generate": "commitry generate",
+    "commit:status": "commitry status",
+    "commit:watch": "commitry watch",
+    "commit:doctor": "commitry doctor",
+    "dev:tracked": "commitry run -- npm run dev"
   }
 }
 ```
 
-If a script name already has a different command, CommitCraft reports and preserves it.
+If a script name already has a different command, Commitry reports and preserves it.
 
 ## Configuration
 
-CommitCraft searches for `.commitcraftrc`, `.commitcraftrc.json`, or `commitcraft.config.json`. A compact example:
+Commitry searches for `.commitryrc`, `.commitryrc.json`, or `commitry.config.json`. A compact example:
 
 ```json
 {
@@ -152,7 +152,7 @@ Hook modes are `auto`, `native`, `husky`, and `none`. Pre-push policies are `off
 
 ## Safety and privacy
 
-CommitCraft:
+Commitry:
 
 - Runs Git with argument arrays rather than interpolated shell commands
 - Writes approved commit messages to a mode-restricted temporary file and calls `git commit -F`
@@ -166,9 +166,9 @@ Secret detection is a protective heuristic, not a replacement for repository sca
 
 ## Reminder model
 
-Reminder state lives at `.git/commitcraft/state.json`, so it is never tracked. Signals include dirty duration, staged duration, changed file count, changed line count, and unresolved conflicts. Cooldowns, snoozing, and CI suppression keep notifications useful rather than noisy.
+Reminder state lives at `.git/commitry/state.json`, so it is never tracked. Signals include dirty duration, staged duration, changed file count, changed line count, and unresolved conflicts. Cooldowns, snoozing, and CI suppression keep notifications useful rather than noisy.
 
-`commitcraft watch` remains in the foreground. CommitCraft does not install a hidden background service.
+`commitry watch` remains in the foreground. Commitry does not install a hidden background service.
 
 ## Development
 
@@ -193,7 +193,7 @@ Planned: repository-history learning, optional structured AI providers with rule
 
 ## Versioning and releases
 
-CommitCraft follows semantic versioning:
+Commitry follows semantic versioning:
 
 - `patch`: compatible bug fixes
 - `minor`: backward-compatible features
@@ -208,8 +208,8 @@ npm run release -- patch
 
 Review and commit the generated version and changelog changes, create the printed Git tag, and push with `--follow-tags`. The release workflow publishes the matching npm version and creates a GitHub Release.
 
-After the first manual npm publication, configure npm trusted publishing for GitHub Actions with organization/user `Deremas`, repository `commitcraft`, workflow filename `release.yml`, and allowed action `npm publish`. The workflow uses short-lived OIDC credentials and automatic provenance; it does not require a long-lived npm token.
+After the first manual npm publication, configure npm trusted publishing for GitHub Actions with organization/user `Deremas`, repository `commitry`, workflow filename `release.yml`, and allowed action `npm publish`. The workflow uses short-lived OIDC credentials and automatic provenance; it does not require a long-lived npm token.
 
 ## License
 
-MIT © CommitCraft contributors.
+MIT © 2026-present Commitry contributors.

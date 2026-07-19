@@ -1,10 +1,10 @@
-import type { CommitCraftConfig } from "../config/schema.js";
+import type { CommitryConfig } from "../config/schema.js";
 import { parseMessage } from "./message-parser.js";
 
 export interface ValidationResult { valid: boolean; errors: string[]; warnings: string[] }
 const vague = /^(changes|updates?|fix(es|ed)?|stuff|work|wip)$/i;
 
-export function validateMessage(message: string, config: CommitCraftConfig): ValidationResult {
+export function validateMessage(message: string, config: CommitryConfig): ValidationResult {
   const parsed = parseMessage(message);
   const errors: string[] = [], warnings: string[] = [];
   if (!parsed) return { valid: false, errors: ["Message must match <type>[optional scope][!]: <description>"], warnings };

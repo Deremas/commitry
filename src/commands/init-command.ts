@@ -15,8 +15,8 @@ export async function initCommand(options: InitOptions, cwd = process.cwd()): Pr
   const [scripts, projectTypes, ignored] = await Promise.all([addPackageScripts(root), detectProjectTypes(root), ensureGitignoreEntries(root, ["node_modules/"])]);
   const hookMode = options.hooks ?? config.hooks.mode;
   const hooks = config.hooks.enabled ? await installHooks(root, hookMode, { "pre-commit": config.hooks.secretCheck, "commit-msg": config.hooks.commitMessageValidation, "post-commit": config.hooks.resetReminderAfterCommit, "pre-push": config.hooks.prePushReminder }) : { mode: "none" as const, installed: [], alreadyInstalled: [] };
-  console.log(pc.green("CommitCraft initialized successfully.\n"));
-  console.log(`${configResult === "created" ? "Created" : "Preserved"}: .commitcraftrc.json`);
+  console.log(pc.green("Commitry initialized successfully.\n"));
+  console.log(`${configResult === "created" ? "Created" : "Preserved"}: .commitryrc.json`);
   if (scripts) {
     if (scripts.added.length) console.log(`Added package scripts: ${scripts.added.join(", ")}`);
     if (scripts.conflicts.length) console.log(pc.yellow(`Preserved conflicting scripts: ${scripts.conflicts.join(", ")}`));
@@ -24,5 +24,5 @@ export async function initCommand(options: InitOptions, cwd = process.cwd()): Pr
   if (ignored.length) console.log(`Updated .gitignore: ${ignored.join(", ")}`);
   console.log(`Git hooks: ${hooks.mode === "none" ? "disabled" : `commit-message validation enabled (${hooks.mode})`}`);
   if (projectTypes.length) console.log(`Detected: ${projectTypes.join(", ")}`);
-  console.log("\nNext: commitcraft doctor\n      commitcraft status\n      commitcraft commit");
+  console.log("\nNext: commitry doctor\n      commitry status\n      commitry commit");
 }

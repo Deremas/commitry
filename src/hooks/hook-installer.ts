@@ -5,8 +5,8 @@ import { git, runGit } from "../git/runner.js";
 export type HookMode = "auto" | "native" | "husky" | "none";
 export type InstalledHook = "pre-commit" | "commit-msg" | "post-commit" | "pre-push";
 export type HookSelection = Partial<Record<InstalledHook, boolean>>;
-const start = "# commitcraft:start"; const end = "# commitcraft:end";
-const hookBodies: Record<InstalledHook, string> = { "pre-commit": "npx --no-install commitcraft hook pre-commit", "commit-msg": 'npx --no-install commitcraft lint-file "$1"', "post-commit": "npx --no-install commitcraft hook post-commit", "pre-push": "npx --no-install commitcraft hook pre-push" };
+const start = "# commitry:start"; const end = "# commitry:end";
+const hookBodies: Record<InstalledHook, string> = { "pre-commit": "npx --no-install commitry hook pre-commit", "commit-msg": 'npx --no-install commitry lint-file "$1"', "post-commit": "npx --no-install commitry hook post-commit", "pre-push": "npx --no-install commitry hook pre-push" };
 const managed = (hook: InstalledHook) => `${start}\n${hookBodies[hook]}\n${end}`;
 
 export interface HookInstallation { mode: Exclude<HookMode, "auto">; directory?: string; installed: InstalledHook[]; alreadyInstalled: InstalledHook[] }

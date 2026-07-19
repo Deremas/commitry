@@ -18,12 +18,12 @@ export async function doctorCommand(options: { json?: boolean }, cwd = process.c
     try { await loadConfig(root); checks.push({ name: "Configuration", ok: true, detail: "valid", required: true }); } catch (error) { checks.push({ name: "Configuration", ok: false, detail: message(error), required: true }); }
     const hooks = await hookStatus(root); checks.push({ name: "Commit hook", ok: hooks.commitMessageValidation, detail: hooks.commitMessageValidation ? hooks.directory! : "not installed", required: false });
     try { await access(root, constants.W_OK); checks.push({ name: "Repository write access", ok: true, detail: "writable", required: true }); } catch { checks.push({ name: "Repository write access", ok: false, detail: "not writable", required: true }); }
-    const localBin = join(root, "node_modules", ".bin", process.platform === "win32" ? "commitcraft.cmd" : "commitcraft");
+    const localBin = join(root, "node_modules", ".bin", process.platform === "win32" ? "commitry.cmd" : "commitry");
     try { await access(localBin); checks.push({ name: "Project-local install", ok: true, detail: localBin, required: false }); } catch { checks.push({ name: "Project-local install", ok: false, detail: "not found (global/on-demand use is still supported)", required: false }); }
   }
   const healthy = checks.every((check) => !check.required || check.ok);
   if (options.json) console.log(JSON.stringify({ healthy, checks }, null, 2));
-  else { console.log(pc.bold("CommitCraft doctor\n")); checks.forEach((check) => console.log(`${check.ok ? pc.green("✓") : check.required ? pc.red("✗") : pc.yellow("!")} ${check.name}: ${check.detail}`)); console.log(healthy ? pc.green("\nRequired checks passed.") : pc.red("\nOne or more required checks failed.")); }
+  else { console.log(pc.bold("Commitry doctor\n")); checks.forEach((check) => console.log(`${check.ok ? pc.green("✓") : check.required ? pc.red("✗") : pc.yellow("!")} ${check.name}: ${check.detail}`)); console.log(healthy ? pc.green("\nRequired checks passed.") : pc.red("\nOne or more required checks failed.")); }
   if (!healthy) process.exitCode = 1;
 }
 function message(error: unknown): string { return error instanceof Error ? error.message : String(error); }

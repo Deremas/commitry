@@ -31,4 +31,4 @@ export const configSchema = z.object({
   provider: z.object({ type: z.literal("rule-based").default("rule-based") }).default({ type: "rule-based" })
 });
 
-export type CommitCraftConfig = z.infer<typeof configSchema>;
+export type CommitryConfig = z.infer<typeof configSchema>;

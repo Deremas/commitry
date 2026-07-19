@@ -1,7 +1,7 @@
 {
-  "name": "commitcraft",
+  "name": "commitry",
   "version": "0.1.0",
-  "description": "Git-aware Conventional Commit generator and developer reminder CLI",
+  "description": "Try, validate, and craft better Git commits from your terminal",
   "keywords": [
     "git",
     "cli",
@@ -13,11 +13,11 @@
   "author": "Deremas",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Deremas/commitcraft.git"
+    "url": "git+https://github.com/Deremas/commitry.git"
   },
-  "homepage": "https://github.com/Deremas/commitcraft#readme",
+  "homepage": "https://github.com/Deremas/commitry#readme",
   "bugs": {
-    "url": "https://github.com/Deremas/commitcraft/issues"
+    "url": "https://github.com/Deremas/commitry/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -25,8 +25,8 @@
   "sideEffects": false,
   "type": "module",
   "bin": {
-    "commitcraft": "dist/cli.js",
-    "ccraft": "dist/cli.js"
+    "commitry": "dist/cli.js",
+    "ctry": "dist/cli.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

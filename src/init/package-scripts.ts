@@ -2,8 +2,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const recommendedScripts: Record<string, string> = {
-  commit: "commitcraft commit", "commit:generate": "commitcraft generate", "commit:status": "commitcraft status",
-  "commit:watch": "commitcraft watch", "commit:doctor": "commitcraft doctor", "dev:tracked": "commitcraft run -- npm run dev"
+  commit: "commitry commit", "commit:generate": "commitry generate", "commit:status": "commitry status",
+  "commit:watch": "commitry watch", "commit:doctor": "commitry doctor", "dev:tracked": "commitry run -- npm run dev"
 };
 
 export interface ScriptUpdate { added: string[]; existing: string[]; conflicts: string[] }

@@ -7,4 +7,4 @@ import { afterEach, describe, expect, it } from "vitest";
 import { runWithWatcher } from "../../src/reminders/command-runner.js";
 const exec = promisify(execFile); const directories: string[] = [];
 afterEach(async () => Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true }))));
-describe("runWithWatcher", () => { it("returns the child process exit code and stops the watcher", async () => { const root = await mkdtemp(join(tmpdir(), "commitcraft-run-")); directories.push(root); await exec("git", ["init", "-b", "main"], { cwd: root }); const result = await runWithWatcher(process.execPath, ["-e", "process.exit(7)"], root); expect(result).toBe(7); }); });
+describe("runWithWatcher", () => { it("returns the child process exit code and stops the watcher", async () => { const root = await mkdtemp(join(tmpdir(), "commitry-run-")); directories.push(root); await exec("git", ["init", "-b", "main"], { cwd: root }); const result = await runWithWatcher(process.execPath, ["-e", "process.exit(7)"], root); expect(result).toBe(7); }); });
