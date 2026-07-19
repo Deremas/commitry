@@ -2,7 +2,13 @@
   "name": "commitcraft",
   "version": "0.1.0",
   "description": "Git-aware Conventional Commit generator and developer reminder CLI",
-  "keywords": ["git", "cli", "conventional-commits", "commit-message", "developer-tools"],
+  "keywords": [
+    "git",
+    "cli",
+    "conventional-commits",
+    "commit-message",
+    "developer-tools"
+  ],
   "license": "MIT",
   "author": "Deremas",
   "repository": {
@@ -19,8 +25,8 @@
   "sideEffects": false,
   "type": "module",
   "bin": {
-    "commitcraft": "./dist/cli.js",
-    "ccraft": "./dist/cli.js"
+    "commitcraft": "dist/cli.js",
+    "ccraft": "dist/cli.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
