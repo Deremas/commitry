@@ -10,7 +10,7 @@ const changelogPath = new URL("../CHANGELOG.md", import.meta.url); const changel
 const unreleased = /## \[Unreleased\]\s*([\s\S]*?)(?=\n## \[|$)/.exec(changelog)?.[1]?.trim();
 if (!unreleased) fail("Add release notes under [Unreleased] in CHANGELOG.md first.");
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-const versionResult = spawnSync(npmCommand, ["version", bump, "--no-git-tag-version"], { stdio: "inherit" });
+const versionResult = spawnSync(npmCommand, ["version", bump, "--no-git-tag-version"], { stdio: "inherit", shell: process.platform === "win32" });
 if (versionResult.status !== 0) fail("npm version failed.");
 const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 const date = new Date().toISOString().slice(0, 10);

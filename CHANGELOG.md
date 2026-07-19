@@ -8,6 +8,10 @@ All notable changes to Commitry are documented here. The format follows Keep a C
 
 - Consistent colorful terminal theme for interactive menus, status, suggestions, diagnostics, and feedback
 
+### Fixed
+
+- Windows release preparation now invokes npm command shims through the system shell
+
 ## [0.1.0] - 2026-07-19
 
 ### Added
