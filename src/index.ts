@@ -11,6 +11,8 @@ export { validateMessage } from "./validation/validate-message.js";
 export { installHooks, uninstallHooks, hookStatus } from "./hooks/hook-installer.js";
 export { detectProjectTypes } from "./analysis/project-detector.js";
 export { ensureGitignoreEntries } from "./init/gitignore.js";
+export { interactiveCommand } from "./commands/interactive-command.js";
+export { VERSION } from "./version.js";
 export { evaluateReminder, cooldownExpired } from "./reminders/trigger-evaluator.js";
 export { updateReminderState, fingerprint, emptyReminderState } from "./reminders/reminder-state.js";
 export { ReminderStore } from "./reminders/reminder-store.js";

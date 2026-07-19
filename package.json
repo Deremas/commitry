@@ -4,6 +4,18 @@
   "description": "Git-aware Conventional Commit generator and developer reminder CLI",
   "keywords": ["git", "cli", "conventional-commits", "commit-message", "developer-tools"],
   "license": "MIT",
+  "author": "Deremas",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deremas/commitcraft.git"
+  },
+  "homepage": "https://github.com/Deremas/commitcraft#readme",
+  "bugs": {
+    "url": "https://github.com/Deremas/commitcraft/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "type": "module",
   "bin": {
@@ -37,6 +49,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "check": "npm run typecheck && npm test && npm run build",
+    "release": "tsx scripts/release.ts",
+    "release:check": "npm run check && npm audit && npm pack --dry-run",
     "prepublishOnly": "npm run check"
   },
   "dependencies": {

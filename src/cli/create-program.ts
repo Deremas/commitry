@@ -11,10 +11,13 @@ import { watchCommand } from "../commands/watch-command.js";
 import { runCommand } from "../commands/run-command.js";
 import { snoozeCommand } from "../commands/snooze-command.js";
 import { hookCommand } from "../commands/hook-command.js";
+import { interactiveCommand } from "../commands/interactive-command.js";
+import { VERSION } from "../version.js";
 
 export function createProgram(): Command {
-  const program = new Command().name("commitcraft").description("Git-aware Conventional Commit generator").version("0.1.0").showHelpAfterError();
-  program.action(async () => commitCommand({}));
+  const program = new Command().name("commitcraft").description("Git-aware Conventional Commit generator").version(VERSION).showHelpAfterError();
+  program.action(async () => isInteractiveTerminal() ? interactiveCommand() : commitCommand({}));
+  program.command("interactive").alias("i").description("Open the interactive CommitCraft menu").action(async () => interactiveCommand());
   program.command("init").description("Initialize CommitCraft in this repository").option("--hooks <mode>", "auto, native, husky, or none", "auto").option("--non-interactive").action(async (_options, command) => initCommand(command.opts()));
   program.command("doctor").description("Diagnose the CommitCraft installation").option("--json").action(async (_options, command) => doctorCommand(command.opts()));
   program.command("generate").alias("g").description("Generate commit suggestions").option("--explain").option("--json").option("--unstaged").option("--all").action(async (_options, command) => generateCommand(command.opts()));
@@ -33,3 +36,5 @@ export function createProgram(): Command {
   program.command("hook <name>", { hidden: true }).action(async (name: string) => hookCommand(name));
   return program;
 }
+
+function isInteractiveTerminal(): boolean { return Boolean((process.stdin.isTTY && process.stdout.isTTY) || (process.platform === "win32" && process.env.MSYSTEM && !process.env.CI)); }

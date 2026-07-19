@@ -57,13 +57,29 @@ npm run commit:generate -- --explain
 npm run commit
 ```
 
+## Interactive terminal mode
+
+Run either executable without arguments to open the persistent menu:
+
+```bash
+ccraft
+# or
+commitcraft interactive
+```
+
+The menu refreshes repository counts and lets you commit, generate suggestions, inspect status, evaluate or snooze reminders, validate messages, inspect hooks, and run diagnostics. Press `Ctrl+C` or choose **Exit** to close it.
+
+Commands such as `ccraft generate --json` remain non-interactive by design so they are safe to use in scripts and editor integrations. Use `ccraft commit` when you want only the guided commit flow.
+
 Initialization is idempotent. Existing configuration, conflicting package scripts, and custom hook commands are preserved.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `commitcraft` / `commitcraft commit` | Suggest, review, and create a commit from staged changes |
+| `commitcraft` | Open the interactive menu when attached to a terminal |
+| `commitcraft commit` | Suggest, review, and create a commit from staged changes |
+| `commitcraft interactive` (`i`) | Open the persistent interactive terminal menu |
 | `commitcraft generate` (`g`) | Generate suggestions without committing |
 | `commitcraft generate --unstaged` | Preview unstaged work only |
 | `commitcraft generate --all` | Preview all local work only |
@@ -174,6 +190,25 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for test and contribution guidance and [C
 Implemented: reliable core, project initialization, safe hooks, diagnostics, reminder workflows, project-aware rule-based analysis, mixed-concern detection, and local security filtering.
 
 Planned: repository-history learning, optional structured AI providers with rule-based fallback, VS Code integration, and standalone executables.
+
+## Versioning and releases
+
+CommitCraft follows semantic versioning:
+
+- `patch`: compatible bug fixes
+- `minor`: backward-compatible features
+- `major`: breaking CLI, configuration, or library API changes
+
+Add user-visible notes under `[Unreleased]` in `CHANGELOG.md`, commit the work, then prepare a release:
+
+```bash
+npm run release:check
+npm run release -- patch
+```
+
+Review and commit the generated version and changelog changes, create the printed Git tag, and push with `--follow-tags`. The release workflow publishes the matching npm version and creates a GitHub Release.
+
+After the first manual npm publication, configure npm trusted publishing for GitHub Actions with organization/user `Deremas`, repository `commitcraft`, workflow filename `release.yml`, and allowed action `npm publish`. The workflow uses short-lived OIDC credentials and automatic provenance; it does not require a long-lived npm token.
 
 ## License
 
