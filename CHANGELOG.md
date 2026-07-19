@@ -4,12 +4,6 @@ All notable changes to Commitry are documented here. The format follows Keep a C
 
 ## [Unreleased]
 
-### Changed
-
-- Renamed the project, npm package, repository, configuration, and CLI from CommitCraft to Commitry
-- Interactive Generate and Commit flows now offer Select files, Stage all, and Back staging actions when nothing is staged
-- Shortened the compact CLI executable from `cmtry` to `ctry`
-
 ## [0.1.0] - 2026-07-19
 
 ### Added
@@ -27,3 +21,10 @@ All notable changes to Commitry are documented here. The format follows Keep a C
 - Interactive safe commit creation
 - Conventional Commit message validation
 - TypeScript library exports and CLI packaging
+
+### Changed
+
+- Renamed the project, npm package, repository, configuration, and CLI from CommitCraft to Commitry
+- Interactive Generate and Commit flows now offer Select files, Stage all, and Back staging actions when nothing is staged
+- Shortened the compact CLI executable from `cmtry` to `ctry`
+- Commit inference now recognizes project renames and added capabilities instead of producing generic file-count subjects

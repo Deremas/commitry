@@ -1,5 +1,6 @@
 import type { CommitType } from "../types/commit.js";
 import type { ChangedFile } from "../types/git.js";
+import { detectAddedCapability, detectProjectRename } from "./change-intent.js";
 
 export interface Classification { type: CommitType; confidence: number; reasons: string[] }
 
@@ -11,6 +12,9 @@ export function classifyChanges(files: ChangedFile[], diff: string): Classificat
   if (only(/(^|\/)(\.github\/workflows|\.gitlab-ci|azure-pipelines)|jenkinsfile/)) return result("ci", .96, "all staged files configure CI");
   if (only(/(^|\/)(package(-lock)?\.json|pnpm-lock\.yaml|yarn\.lock|dockerfile|compose\.ya?ml|tsconfig.*\.json|cargo\.toml|go\.mod)$/)) return result("build", .9, "staged files configure dependencies or builds");
   if (files.length > 0 && files.every((file) => file.status === "added")) return result("feat", .9, "the staged change introduces a new project or capability");
+  const rename = detectProjectRename(diff); const capability = detectAddedCapability(files, diff);
+  if (rename && capability) return result("feat", .92, "the project identity changed alongside a new source capability");
+  if (rename) return result("refactor", .94, "the package identity was renamed");
   if (/\b(cache|memoiz|batch|lazy load|performance|optimi[sz])\b/i.test(diff)) return result("perf", .76, "diff contains performance-related changes");
   if (/^\+.*\b(validate|guard|prevent|correct|fallback|error|invalid|null|undefined|duplicate|boundary)\b/im.test(diff)) return result("fix", .72, "diff adds validation or error prevention");
   if (files.some((file) => file.status === "added") || /^\+.*\b(export (class|function)|route|controller|component|command)\b/im.test(diff)) return result("feat", .7, "new files or capabilities were detected");
