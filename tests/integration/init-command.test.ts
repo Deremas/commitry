@@ -21,6 +21,7 @@ describe("initCommand", () => {
     const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
     expect(pkg.scripts.commit).toBe("custom-commit");
     expect(pkg.scripts["commit:generate"]).toBe("commitcraft generate");
+    expect(await readFile(join(root, ".gitignore"), "utf8")).toBe("node_modules/\n");
     const hook = await readFile(join(root, ".githooks", "commit-msg"), "utf8");
     expect(hook.match(/# commitcraft:start/g)).toHaveLength(1);
     expect(JSON.parse(await readFile(join(root, ".commitcraftrc.json"), "utf8"))).toMatchObject({ standard: "conventional-commits" });
