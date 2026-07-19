@@ -25,8 +25,8 @@ export async function interactiveCommand(cwd = process.cwd()): Promise<void> {
       const snapshot = await readRepositorySnapshot(cwd);
       console.log(statusLine(snapshot.branch ?? "detached HEAD", snapshot.stagedFiles.length, snapshot.unstagedFiles.length, snapshot.untrackedFiles.length, snapshot.conflictedFiles.length));
       const action = await select<InteractiveAction>({ message: "What would you like to do?", choices: [
-        { name: "Commit staged changes", value: "commit", description: "Generate, review, edit, and approve a commit" },
-        { name: "Generate suggestions", value: "generate", description: "Analyze the staged diff without committing" },
+        { name: snapshot.stagedFiles.length ? "Commit staged changes" : "Stage and commit changes", value: "commit", description: snapshot.stagedFiles.length ? "Generate, review, edit, and approve a commit" : "Choose changes to stage, then generate and approve a commit" },
+        { name: snapshot.stagedFiles.length ? "Generate suggestions" : "Stage and generate suggestions", value: "generate", description: snapshot.stagedFiles.length ? "Analyze the staged diff without committing" : "Choose changes to stage, then analyze them without committing" },
         { name: "Manage staging", value: "stage", description: "Select files, stage all changes, or return to this menu" },
         { name: "Show repository status", value: "status" },
         { name: "Evaluate reminders", value: "remind" },

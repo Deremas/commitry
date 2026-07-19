@@ -7,6 +7,9 @@ export function inferSubject(type: CommitType, files: ChangedFile[], scope?: str
   if (rename && capability) return `rename project to ${rename.to} and add ${capability}`;
   if (rename) return `rename ${rename.from} to ${rename.to}`;
   if (type === "feat" && capability) return `add ${capability}`;
+  const modules = inferApplicationModules(files);
+  if (type === "feat" && modules.length > 1) return `improve ${formatList(modules.slice(0, 4))} workflows`;
+  if (type === "feat" && modules.length === 1 && files.length > 1) return `improve ${modules[0]} workflow`;
   if (type === "fix" && files.length > 1 && /\b(validate|guard|prevent|correct|fallback|error|invalid|null|undefined|duplicate|boundary)\b/i.test(diff)) return "prevent invalid behavior";
   if (type === "feat" && files.length > 5 && files.every((file) => file.status === "added")) return "build initial project";
   const nouns = symbols.length === 1 ? humanize(symbols[0]!) : scope ?? describeFiles(files);
@@ -17,6 +20,24 @@ export function inferSubject(type: CommitType, files: ChangedFile[], scope?: str
     if (type === "refactor") return "reorganize project implementation";
   }
   return `${verbs[type]} ${suffix[type]}`;
+}
+
+const applicationModules = new Set(["auth", "credit", "finance", "inventory", "sales", "purchase", "receiving", "reports", "requests", "settings", "transfers"]);
+
+function inferApplicationModules(files: ChangedFile[]): string[] {
+  const modules: string[] = [];
+  for (const file of files) {
+    const parts = file.path.toLowerCase().replaceAll("\\", "/").split("/");
+    const candidate = parts.find((part) => applicationModules.has(part));
+    if (candidate && !modules.includes(candidate)) modules.push(candidate);
+  }
+  return modules.sort();
+}
+
+function formatList(values: string[]): string {
+  if (values.length < 2) return values[0] ?? "application";
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
 function humanize(value: string): string { return value.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[-_]+/g, " ").toLowerCase(); }

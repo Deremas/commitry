@@ -11,4 +11,17 @@ describe("classifyChanges", () => {
     const diff = '-  "name": "old-name",\n+  "name": "new-name",\n+const prompt = "Select files";';
     expect(classifyChanges([file("package.json"), file("src/git/staging.ts", "added")], diff)).toMatchObject({ type: "feat", confidence: .92 });
   });
+  it("does not classify a broad UI workflow change as performance from a stray optimization word", () => {
+    const files = [file("app/credit/invoices/page.tsx"), file("components/sales/pos-interface.tsx"), file("lib/access.ts")];
+    const diff = '+<Button onClick={settle}>Settle</Button>\n+// optimize the user flow\n+const hasAccess = hasPermission(access, "credit.statement.view");';
+    expect(classifyChanges(files, diff)).toMatchObject({ type: "feat" });
+  });
+  it("requires concrete performance evidence", () => {
+    expect(classifyChanges([file("components/list.tsx")], "+const rows = useMemo(() => filterRows(items), [items]);").type).toBe("perf");
+  });
+  it("does not let one optimization dominate a broad workflow change", () => {
+    const files = Array.from({ length: 20 }, (_, index) => file(index === 0 ? "components/sales/pos-interface.tsx" : `app/credit/view-${index}/page.tsx`));
+    const diff = "+const rows = useMemo(() => filterRows(items), [items]);\n+<Button onClick={settle}>Settle</Button>";
+    expect(classifyChanges(files, diff).type).toBe("feat");
+  });
 });

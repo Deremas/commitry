@@ -6,7 +6,7 @@ import { classifyChanges } from "./change-classifier.js";
 import { inferScope } from "./scope-inference.js";
 import { inferSubject } from "./subject-inference.js";
 
-const knownModules = new Set(["auth", "authentication", "inventory", "sales", "booking", "billing", "payments", "orders", "users"]);
+const knownModules = new Set(["auth", "authentication", "credit", "finance", "inventory", "sales", "purchase", "receiving", "reports", "requests", "settings", "transfers", "booking", "billing", "payments", "orders", "users"]);
 
 export function groupConcerns(files: ChangedFile[], diff: string, config: CommitryConfig): ConcernGroup[] {
   const primary = new Map<string, ChangedFile[]>(); const supporting: ChangedFile[] = [];
@@ -22,6 +22,10 @@ function primaryConcern(path: string, mappings: Record<string, string>): string 
   for (const [pattern, scope] of Object.entries(mappings)) if (minimatch(normalized, pattern, { dot: true, matchBase: true })) return scope;
   const structured = /^(?:src\/)?(?:modules|features)\/([^/]+)\//i.exec(normalized) ?? /^(?:apps|packages)\/([^/]+)\//i.exec(normalized);
   if (structured) return structured[1]!.toLowerCase();
+  const application = /^(?:src\/)?(?:app|pages|components)\/([^/]+)\//i.exec(normalized)?.[1]?.toLowerCase();
+  if (application && knownModules.has(application)) return application;
+  const queryModule = /^(?:src\/)?lib\/queries\/([^/.]+)\.[^/]+$/i.exec(normalized)?.[1]?.toLowerCase();
+  if (queryModule && knownModules.has(queryModule)) return queryModule;
   const simple = /^src\/([^/]+)\//i.exec(normalized)?.[1]?.toLowerCase(); return simple && knownModules.has(simple) ? simple : undefined;
 }
 function supportConcern(path: string): string { const normalized = path.toLowerCase().replaceAll("\\", "/"); if (/^(package(-lock)?\.json|pnpm-lock\.yaml|yarn\.lock)$/.test(normalized)) return "deps"; if (/^(readme|docs\/|changelog|license|security|contributing)/.test(normalized) || normalized.endsWith(".md")) return "documentation"; if (/^(tests?|__tests__)\//.test(normalized)) return "tests"; if (/^\.github\//.test(normalized)) return "ci"; return "project"; }

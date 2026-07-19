@@ -9,10 +9,13 @@ All notable changes to Commitry are documented here. The format follows Keep a C
 ### Added
 
 - Consistent colorful terminal theme for interactive menus, status, suggestions, diagnostics, and feedback
+- Module-aware subjects for broad Next.js application changes across routes, components, and query modules
 
 ### Fixed
 
 - Windows release preparation now invokes npm command shims through an explicit `cmd.exe` path
+- Performance commits now require concrete optimization evidence instead of matching incidental words such as `optimize`
+- Interactive actions now say when Commitry will stage changes before committing or generating suggestions
 
 ## [0.1.0] - 2026-07-19
 

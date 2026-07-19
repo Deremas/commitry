@@ -19,4 +19,9 @@ describe("inferSubject", () => {
   it("avoids repeating fix for broad validation changes", () => {
     expect(inferSubject("fix", [file("src/a.ts"), file("src/b.ts")], undefined, [], "+prevent invalid input")).toBe("prevent invalid behavior");
   });
+
+  it("summarizes broad application work by its affected modules", () => {
+    const files = [file("app/credit/invoices/page.tsx"), file("components/sales/pos-interface.tsx"), file("app/finance/expenses/page.tsx"), file("app/inventory/low-stock/page.tsx")];
+    expect(inferSubject("feat", files, undefined, [], "+<Button>Settle</Button>")).toBe("improve credit, finance, inventory, and sales workflows");
+  });
 });
