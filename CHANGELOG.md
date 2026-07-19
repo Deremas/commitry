@@ -4,11 +4,14 @@ All notable changes to Commitry are documented here. The format follows Keep a C
 
 ## [Unreleased]
 
+### Added
+
+- Consistent colorful terminal theme for interactive menus, status, suggestions, diagnostics, and feedback
+
 ## [0.1.0] - 2026-07-19
 
 ### Added
 
-- Consistent colorful terminal theme for interactive menus, status, suggestions, diagnostics, and feedback
 - Persistent interactive terminal menu through `ctry` and `commitry interactive`
 - Semantic-version release preparation and GitHub Actions CI/publishing workflows
 - Project-aware Next.js, Prisma, ASP.NET, Laravel, Python, and Docker analysis signals
