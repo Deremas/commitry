@@ -9,8 +9,9 @@ if (status.status !== 0 || status.stdout.trim()) fail("Release requires a clean 
 const changelogPath = new URL("../CHANGELOG.md", import.meta.url); const changelog = await readFile(changelogPath, "utf8");
 const unreleased = /## \[Unreleased\]\s*([\s\S]*?)(?=\n## \[|$)/.exec(changelog)?.[1]?.trim();
 if (!unreleased) fail("Add release notes under [Unreleased] in CHANGELOG.md first.");
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-const versionResult = spawnSync(npmCommand, ["version", bump, "--no-git-tag-version"], { stdio: "inherit", shell: process.platform === "win32" });
+const versionResult = process.platform === "win32"
+  ? spawnSync(process.env.ComSpec ?? "cmd.exe", ["/d", "/s", "/c", `npm.cmd version ${bump} --no-git-tag-version`], { stdio: "inherit" })
+  : spawnSync("npm", ["version", bump, "--no-git-tag-version"], { stdio: "inherit" });
 if (versionResult.status !== 0) fail("npm version failed.");
 const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 const date = new Date().toISOString().slice(0, 10);

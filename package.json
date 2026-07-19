@@ -1,6 +1,6 @@
 {
   "name": "commitry",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Try, validate, and craft better Git commits from your terminal",
   "keywords": [
     "git",
