@@ -1,0 +1,2 @@
+export interface LimitedDiff { content: string; truncated: boolean; originalLength: number }
+export function limitDiff(diff: string, maximumCharacters = 100_000): LimitedDiff { return diff.length <= maximumCharacters ? { content: diff, truncated: false, originalLength: diff.length } : { content: `${diff.slice(0, maximumCharacters)}\n\n[diff truncated by CommitCraft]`, truncated: true, originalLength: diff.length }; }
